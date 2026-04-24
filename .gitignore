@@ -1,0 +1,5 @@
+.env
+*.log
+letsencrypt/
+sites-enabled/*
+!sites-enabled/.gitkeep

@@ -1,0 +1,95 @@
+:root {
+  --verde-claro:     #E1F5EE;
+  --verde-medio:     #9FE1CB;
+  --verde-principal: #1D9E75;
+  --verde-escuro:    #0F6E56;
+  --verde-profundo:  #085041;
+  --fundo:           #f7faf9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--fundo);
+  color: var(--verde-profundo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.bamboo-left,
+.bamboo-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.bamboo-left  { left: 20px; }
+.bamboo-right { right: 20px; }
+
+.seg  { width: 8px;  height: 28px; background: #1D9E75; border-radius: 2px; margin-bottom: 4px; }
+.node { width: 12px; height: 4px;  background: #0F6E56; border-radius: 2px; margin-bottom: 4px; }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+  z-index: 1;
+}
+
+.turtle { margin-bottom: 16px; }
+
+.code {
+  font-size: 72px;
+  font-weight: 500;
+  color: #1D9E75;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.divider {
+  width: 32px;
+  height: 2px;
+  background: #9FE1CB;
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+.title   { font-size: 18px; font-weight: 500; color: #085041; margin-bottom: 8px; }
+.message { font-size: 13px; color: #0F6E56; line-height: 1.6; max-width: 320px; }
+
+.btn-back {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 8px 20px;
+  border: 0.5px solid #1D9E75;
+  border-radius: 6px;
+  color: #085041;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.btn-back:hover { background: #E1F5EE; }
+
+.brand {
+  position: fixed;
+  bottom: 14px;
+  font-size: 11px;
+  color: #9FE1CB;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+}
