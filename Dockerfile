@@ -1,12 +1,12 @@
-# Stage 1 — base: Alpine com nginx, certbot e utilitários essenciais
-FROM alpine:3.22 AS base
+# Stage 1 — base: nginx 1.30.1 oficial (Alpine 3.23) + certbot e utilitários
+# Alpine 3.23 apk ainda empacota nginx 1.28.x; usar imagem oficial garante 1.30.1
+FROM nginx:1.30.1-alpine AS base
 
 LABEL maintainer="diego@oogway.com.br"
 
 ENV TZ=America/Sao_Paulo
 
 RUN apk add --no-cache \
-        nginx \
         certbot \
         certbot-nginx \
         tzdata \
