@@ -32,10 +32,60 @@ sudo mkdir -p /etc/nginx-proxy/vhosts.d
 
 ## Como usar
 
+### 1. Preparar o host
+
+```bash
+# Diretório de vhosts dos projetos (lido pelo nginx em runtime)
+sudo mkdir -p /etc/nginx-proxy/vhosts.d
+
+# Clonar o repositório no local desejado
+git clone https://github.com/diegobianchetti/nginx-proxy.git /opt/nginx-proxy
+cd /opt/nginx-proxy
+```
+
+### 2. Configurar
+
 ```bash
 cp .env.example .env
-# Edite .env conforme necessário
+```
+
+Variáveis relevantes no `.env`:
+
+| Variável | Padrão | Descrição |
+|----------|--------|-----------|
+| `NGINX_TAG` | `latest` | Tag da imagem no ghcr.io |
+| `HTTP_PORT` | `80` | Porta HTTP no host |
+| `HTTPS_PORT` | `443` | Porta HTTPS no host |
+| `NGINX_MEMORY_LIMIT` | `512M` | Limite de memória do container |
+| `COMPOSE_PROJECT_SUBNET` | `172.31.0.0/28` | Subnet da rede interna do proxy |
+
+### 3. Subir
+
+```bash
 docker compose up -d
+```
+
+### 4. Verificar
+
+```bash
+# Container em execução
+docker compose ps
+
+# Nginx respondendo (sem vhost → return 444 é o comportamento esperado)
+curl -v http://localhost
+# Expected: * Empty reply from server (conexão fechada — catch-all ativo)
+
+# Logs
+docker compose logs -f
+```
+
+### 5. Adicionar vhosts manualmente
+
+Coloque arquivos `.conf` em `/etc/nginx-proxy/vhosts.d/` no host — o nginx
+recarrega automaticamente a cada 60 segundos via crond, ou force imediatamente:
+
+```bash
+docker exec nginx-proxy nginx -s reload
 ```
 
 ---
