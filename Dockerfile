@@ -1,6 +1,6 @@
-# Stage 1 — base: nginx 1.30.1 oficial (Alpine 3.23) + certbot e utilitários
-# Alpine 3.23 apk ainda empacota nginx 1.28.x; usar imagem oficial garante 1.30.1
-FROM nginx:1.30.1-alpine AS base
+# Stage 1 — base: nginx 1.30.4 oficial (Alpine 3.24) + certbot e utilitários
+# CVE-2026-42533: correção do map+regex presente a partir do nginx 1.30.4
+FROM nginx:1.30.4-alpine AS base
 
 LABEL maintainer="diego@oogway.com.br"
 
