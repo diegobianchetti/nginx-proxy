@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+# Job diário (/etc/periodic/daily, rodado pelo crond do Alpine) que renova
+# certificados Let's Encrypt e recarrega o nginx somente quando algum
+# certificado foi de fato renovado (--deploy-hook).
+#
+# ARMADILHA: este arquivo NÃO pode ter extensão (.sh) — o run-parts do
+# busybox/Alpine ignora silenciosamente arquivos com "." no nome.
+
+LOG_FILE="/var/log/letsencrypt/renew.log"
+
+mkdir -p /var/log/letsencrypt
+
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] certbot-renew: iniciando" >> "$LOG_FILE"
+
+if certbot renew --quiet --deploy-hook "nginx -s reload" >> "$LOG_FILE" 2>&1; then
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] certbot-renew: concluido (rc=0)" >> "$LOG_FILE"
+else
+    rc=$?
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] certbot-renew: falhou (rc=${rc})" >> "$LOG_FILE"
+    exit "$rc"
+fi

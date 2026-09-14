@@ -10,7 +10,10 @@ Imagem publicada em `ghcr.io/diegobianchetti/nginx-proxy`.
 ## Funcionalidades
 
 - Proxy reverso para containers Docker via vhosts (`.conf` por projeto)
-- Renovação automática de certificados Let's Encrypt via certbot + crond
+- Renovação automática de certificados Let's Encrypt: job diário em
+  `/etc/periodic/daily/certbot-renew` (`crond`) roda `certbot renew --quiet
+  --deploy-hook "nginx -s reload"` e registra início/resultado em
+  `/var/log/letsencrypt/renew.log`
 - Certificado self-signed gerado em runtime para o vhost default
 - Páginas de erro customizadas em português com identidade visual Jardim Zen
 - Proteção contra SQL injection, path traversal e exploits comuns
@@ -81,8 +84,8 @@ docker compose logs -f
 
 ### 5. Adicionar vhosts manualmente
 
-Coloque arquivos `.conf` em `/etc/nginx-proxy/vhosts.d/` no host — o nginx
-recarrega automaticamente a cada 60 segundos via crond, ou force imediatamente:
+Coloque arquivos `.conf` em `/etc/nginx-proxy/vhosts.d/` no host. A recarga de
+vhost **não** é automática: é disparada pelo `cctl` ou manualmente:
 
 ```bash
 docker exec nginx-proxy nginx -s reload

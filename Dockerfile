@@ -1,6 +1,6 @@
-# Stage 1 — base: nginx 1.30.4 oficial (Alpine 3.24) + certbot e utilitários
-# CVE-2026-42533: correção do map+regex presente a partir do nginx 1.30.4
-FROM nginx:1.30.4-alpine AS base
+# Stage 1 — base: nginx 1.31.5 oficial (Alpine 3.24) + certbot e utilitários
+# CVE-2026-42533: correção do map+regex presente a partir do nginx 1.30.4 (mantida em 1.31.5)
+FROM nginx:1.31.5-alpine AS base
 
 LABEL maintainer="diego@oogway.com.br"
 
@@ -15,13 +15,16 @@ RUN apk add --no-cache \
         openssl \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo "${TZ}" > /etc/timezone \
-    && mkdir -p /var/log/nginx /run/nginx
+    && mkdir -p /var/log/nginx /run/nginx /var/www/certbot
 
 # Stage 2 — config: copia configurações, scripts e páginas de erro
 FROM base AS config
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+COPY certbot-renew /etc/periodic/daily/certbot-renew
+RUN chmod +x /etc/periodic/daily/certbot-renew
 
 COPY nginx/nginx.conf           /etc/nginx/nginx.conf
 COPY nginx/block-injects.conf   /etc/nginx/conf.d/block-injects.conf
