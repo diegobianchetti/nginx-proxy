@@ -1,6 +1,6 @@
-# Stage 1 — base: nginx 1.31.5 oficial (Alpine 3.24) + certbot e utilitários
-# CVE-2026-42533: correção do map+regex presente a partir do nginx 1.30.4 (mantida em 1.31.5)
-FROM nginx:1.31.5-alpine AS base
+# Stage 1 — base: nginx 1.31.8 oficial (Alpine) + certbot e utilitários
+# 1.31.8: inclui as correções de CVE da 1.31.6 e da 1.31.7 (CVE-2026-93479, -15176, -97629 etc.)
+FROM nginx:1.31.8-alpine AS base
 
 LABEL maintainer="diego@oogway.com.br"
 
